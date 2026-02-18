@@ -1,9 +1,11 @@
-#include <Arduino.h>
+#include <Arduino.h>             // Базові функції Arduino
+#include "CLD_Interface.h"       // Заголовочний файл з функціями керування кнопками та LCD дисплеєм 
 
 void setup() {
-  // put your setup code here, to run once:
+  LCD_Settings();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  Button();
+  Display_Picture();
 }
