@@ -2,6 +2,7 @@
 #include <WiFi.h>               // Робота з WiFi на ESP32
 #include <HTTPClient.h>         // HTTP клієнт для виконання GET-запитів
 #include "Get_response.h"       // Оголошення структури JSON_value та прототипу Get_JSON()
+#include "WiFi_Connect.h"       // Заголовочний файл з функцією ConnectToWiFi()
 
 
 // Змінна для збереження часу останнього HTTP-запиту
@@ -27,17 +28,23 @@ JSON_value Response_JSON;
 // 2) HTTP-запити до OpenWeather
 // 3) збереження отриманого JSON
 
-JSON_value Get_JSON(){
+void Get_JSON(){
     // Надсилає запит через годину від іншого запита(перший запит відбувається одразу)
     if(lastTime == 0 || millis() - lastTime > timerDelay){
-
         if(WiFi.status() != WL_CONNECTED){
             Serial.println("WiFi not connected");
-            return Response_JSON;
+            //Повторне підключення до WiFi при відсутності мережі для оновлення погодних даних
+            ConnectToWiFi();
         }
         // Цикл по всіх містах
         for(char i=0;i<CITY_COUNT;i++){
-            String Server = "https://api.openweathermap.org/data/2.5/weather?q=" + City[i] + "," + Contry_code[i] + "&appid=" + Api_key;
+            //Server.clear();
+            String Server = "https://api.openweathermap.org/data/2.5/weather?q=";
+            Server += City[i];
+            Server += ",";
+            Server += Contry_code[i];
+            Server += "&appid=";
+            Server += Api_key;
 
             WiFiClientSecure client;
             HTTPClient http;
@@ -60,10 +67,9 @@ JSON_value Get_JSON(){
                 Serial.println(ResponseCode);
             }
             http.end(); 
+            Server.clear();
         }
         lastTime = millis();
 
     }
-    // Повертаємо структуру з даними
-    return Response_JSON;
 }
