@@ -1,12 +1,12 @@
 # WeatherST
-ESP32 Weather Station - this is a project based on ESP32 with 16 MB flash memory that receives weather data for a selected city and displays it on a 16x2 LCD display.
+ESP32 Weather Station - this is a project based on ESP32 with 16 MB flash memory that receives weather data for a selected city and displays it on a 16x2 LCD display. 
 
 # Runtime Logic
 ### - Display start with notification "Connecting to WiFI..."
 ![](https://github.com/Sharkd-prog/WeatherST/blob/9c56049f9f8930071090df163760007801bef6e7/image/photo_1_2026-02-19_12-55-51.jpg)
 ### - Connect ESP32 to WiFi
 ### - Get JSON request to [OpenWeather](https://openweathermap.org/)
-
+### The request perform once an hour 
 # Example of the response received
 ```bash
 {
@@ -62,6 +62,9 @@ ESP32 Weather Station - this is a project based on ESP32 with 16 MB flash memory
 ```
 ### - Display on LCD "Select  city Press SELECT"
 ![](https://github.com/Sharkd-prog/WeatherST/blob/9c56049f9f8930071090df163760007801bef6e7/image/photo_2_2026-02-19_12-55-51.jpg)
+
+### The advantage of the code is that it is easy to add a new city. Add it by changing CITY_COUNT, which  responsible for the number of all cities, and filling in the City and Country_code arrays.
+
 ## Menu Select City:
 ![ ](https://github.com/Sharkd-prog/WeatherST/blob/9c56049f9f8930071090df163760007801bef6e7/image/photo_3_2026-02-19_12-55-51.jpg)
 ### - Аfter selecting a city the LCD show the temperature and humidity(selection is made using the SELECT, LEFT, DOWN, and RIGHT buttons)
