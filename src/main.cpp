@@ -5,10 +5,11 @@
 
 void setup() {
   Serial.begin(115200);     // Ініціалізація Serial-порту для виводу діагностичних повідомлень
-  
+
+  LCD_Settings();           //Налаштування LCD
+
   delay(5000);              //Затримка 5 секунд, щоб Serial Monitor отримав перше повідомлення
   ConnectToWiFi();          //Підключення до мережі WiFi
-  LCD_Settings();
 }
 
 void loop() {

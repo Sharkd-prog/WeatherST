@@ -45,6 +45,7 @@ void Get_JSON(){
             Server += Contry_code[i];
             Server += "&appid=";
             Server += Api_key;
+            Server += "&units=metric";
 
             WiFiClientSecure client;
             HTTPClient http;
@@ -69,7 +70,9 @@ void Get_JSON(){
             http.end(); 
             Server.clear();
         }
+        WiFi.disconnect(true);  //Вимикається від мережі для економії енергії та усуненню перешкоджань передачі даних на LCD
+        WiFi.mode(WIFI_OFF);
+        
         lastTime = millis();
-
     }
 }

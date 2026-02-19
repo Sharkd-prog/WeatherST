@@ -1,6 +1,8 @@
 #include <Arduino.h>          // Базові функції Arduino
 #include <LiquidCrystal.h>    // Бібліотека для програмування LCD 16x2
 #include "CLD_Interface.h"    // Заголовочний файл з функціями керування кнопками та LCD дисплеєм 
+#include "Get_response.h"     // Оголошення структури JSON_value та прототипу Get_JSON()
+#include <Arduino_JSON.h>     // Бібліотека для роботи з JSON (парсинг і створення JSON-даних)
 
 //Символ стрілки вліво
 byte Arrow_Left[8]={
@@ -63,7 +65,14 @@ const unsigned long Debounce_Delay = 50;    // затримка для усун�
 // Налаштування дисплея
 void LCD_Settings(){
     Display_LCD.begin(LCD_COLUMNS, LCD_ROWS);
+    Display_LCD.setCursor(2,0);
+    Display_LCD.print("Connecting");
+    Display_LCD.setCursor(2,1);
+    Display_LCD.print("to WiFI...");
     Current_Screen = Start_Screen;
+    Display_LCD.createChar(1, Arrow_Left);   //Заповнюємо в першу локацію Arrow_Left
+    Display_LCD.createChar(2, Arrow_Right);  //Заповнюємо в другу локацію Arrow_Right
+    Display_LCD.createChar(0, Empty);        //Заповнюємо в нульову локацію Empty
 }
 
 // Зчитування кнопок RIGHT, LEFT, SELECT, DOWN та по замовчуванню NO_BUTTON(жодна кнопка не натиснута)
@@ -72,13 +81,13 @@ void Button(){
     Value_Button = analogRead(10);
 
     // Зчитування аналового значення АЦП з виводу A0 на Keypad
-    if(Value_Button < 100){
+    if(Value_Button < 200){
         Current_Button = RIGHT_BUTTON;
     }
-    else if(1000 < Value_Button && Value_Button < 1300){
+    else if(1000 < Value_Button && Value_Button < 1500){
         Current_Button = DOWN_BUTTON;
     }
-    else if(Value_Button < 2000){
+    else if(Value_Button < 2050){
         Current_Button = LEFT_BUTTON;
     }
     else if(Value_Button < 3000){
@@ -105,10 +114,6 @@ void Button(){
 
 // Відображення інформації на LCD
 void Display_Picture(){
-
-    Display_LCD.createChar(1, Arrow_Left);   //Заповнюємо в першу локацію Arrow_Left
-    Display_LCD.createChar(2, Arrow_Right);  //Заповнюємо в другу локацію Arrow_Right
-    Display_LCD.createChar(0, Empty);        //Заповнюємо в нульову локацію Empty
 
     switch (Current_Screen)
     {
@@ -139,26 +144,27 @@ void Display_Picture(){
                 
                 //Відображення лівої стрілки
                 Display_LCD.setCursor(0,1);
-                if( City_Index > 0){
-                    Display_LCD.write(byte(1));
-                }
-                else{
+                if( City_Index == 0){
                     Display_LCD.write(byte(0));   //Очищення стрілки ЛІВО якщо дійшли до лівого краю вибору
                 }
-                Display_LCD.setCursor(15,1);
+                else{
+                    Display_LCD.write(byte(1));
+                }
+                
                 //Відображення правої стрілки
-
-                /*if(City_Index < number of cities-1){
+                Display_LCD.setCursor(15,1);
+                if(City_Index == CITY_COUNT-1){
+                    Display_LCD.write(byte(0));   //Очищення стрілки ПРАВО якщо дійшли до правого краю вибору
                     Display_LCD.write(byte(2));
                 }
                 else{
-                    Display_LCD.write(byte(0));   //Очищення стрілки ПРАВО якщо дійшли до правого краю вибору
-                }*/
+                    Display_LCD.write(byte(2));
+                }
 
                 Display_LCD.setCursor(0,0);
                 Display_LCD.print("City: ");
                 Display_LCD.setCursor(6,0);
-                //city to select 
+                Display_LCD.print(City[City_Index]);
                 Display_LCD.setCursor(4,1);
                 Display_LCD.print("Count: ");
                 Display_LCD.setCursor(11,1);
@@ -176,9 +182,9 @@ void Display_Picture(){
             // RIGHT — наступне місто
             if(Pressed_Button == RIGHT_BUTTON){
                 City_Index++;
-                /*if(City_Index >= number of cities ){
-                    City_Index = number of cities-1;
-                }*/
+                if(City_Index >= CITY_COUNT ){
+                    City_Index = CITY_COUNT-1;
+                }
                 Pressed_Button = NO_BUTTON;
                 Draw = Redraw;
             }
@@ -206,7 +212,15 @@ void Display_Picture(){
         case Data_Screen:{
             if(Draw){
                 Display_LCD.clear();
-                //Data of weather
+                JSONVar Weather_Value = JSON.parse(Response_JSON.JSON_Value[City_Index]);
+                Display_LCD.setCursor(0,0);
+                Display_LCD.print("Temp: ");
+                Display_LCD.setCursor(10,0);
+                Display_LCD.print(Weather_Value["main"]["temp"]);
+                Display_LCD.setCursor(0,1);
+                Display_LCD.print("Humidity: ");
+                Display_LCD.setCursor(10,1);
+                Display_LCD.print(Weather_Value["main"]["humidity"]);
                 Draw = No_Redraw;
             }
 

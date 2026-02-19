@@ -10,6 +10,7 @@ struct JSON_value {
 };
 
 extern JSON_value Response_JSON;
+extern String City[CITY_COUNT];
 
 // Прототип функції Get_JSON()
 void Get_JSON();
