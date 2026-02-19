@@ -75,7 +75,7 @@ ESP32 Weather Station - this is a project based on ESP32 with 16 MB flash memory
 ### Used ESP32-S3-N16R8[ESP32-S3-N16R8](https://documentation.espressif.com/esp32-s3_datasheet_en.pdf#cd-pins-io-mux-gpio) and [LCD Keybord Shield](https://arduino.ua/ru/prod235-lcd-keypad-shield?srsltid=AfmBOooayeR4v4l66ZFyZmS4Sh2W3Af4jrzPu0Ckfmve_1bfBB7Gn-ii). 
 
 # Schematic of project: 
-![](https://github.com/Sharkd-prog/WeatherST/blob/113cdac46a3db6fed2fc861c165a2adffd777cf8/image/Schematic_Weather-Stantion_2026-02-19.png)
+![](https://github.com/Sharkd-prog/WeatherST/blob/43a25cd7d71195876688f87e9538d4964f1d89ec/image/Schematic_Weather-Stantion_2026-02-19%20(1).png)
 
 # Description of folders in [lib](https://github.com/Sharkd-prog/WeatherST/tree/9c56049f9f8930071090df163760007801bef6e7/lib) folder.
 ## CLD_Interface
