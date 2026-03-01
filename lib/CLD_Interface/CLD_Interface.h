@@ -1,3 +1,4 @@
+#pragma once
 // Налаштування параметрів LCD
 #define LCD_COLUMNS 16      //Ширина дисплей
 #define LCD_ROWS 2          //Висота дисплея

@@ -155,7 +155,6 @@ void Display_Picture(){
                 Display_LCD.setCursor(15,1);
                 if(City_Index == CITY_COUNT-1){
                     Display_LCD.write(byte(0));   //Очищення стрілки ПРАВО якщо дійшли до правого краю вибору
-                    Display_LCD.write(byte(2));
                 }
                 else{
                     Display_LCD.write(byte(2));

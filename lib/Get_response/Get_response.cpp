@@ -70,9 +70,6 @@ void Get_JSON(){
             http.end(); 
             Server.clear();
         }
-        WiFi.disconnect(true);  //Вимикається від мережі для економії енергії та усуненню перешкоджань передачі даних на LCD
-        WiFi.mode(WIFI_OFF);
-        
         lastTime = millis();
     }
 }
